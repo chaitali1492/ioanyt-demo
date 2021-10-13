@@ -1,25 +1,59 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import IndexPage from './page/index/Index';
+
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+
+let theme = createTheme({
+  typography:{
+    fontSize: 12,
+  },
+  palette:{
+    primary:{
+      main:'#8A368B',
+      light:'#F7F1FB'
+    },
+    secondary:{
+      main:'#000',
+      light:'#b8b8b8'
+    },
+    warning:{
+      main:"#BC3239"
+    }
+    
+  },
+  
+})
+
+theme = createTheme(theme,{
+  typography:{
+    h4: {
+      color:theme.palette.primary.main,//"#854486"
+      fontWeight:"bold",
+      textTransform:'uppercase'
+    },
+    body1:{
+      color:theme.palette.secondary.main,
+      fontWeight:"bold"
+    }
+  },
+  components:{
+    MuiPaper :{
+      styleOverrides:{
+        root:{
+          backgroundColor: theme.palette.primary.light,
+          borderRadius:"30px",
+          padding:theme.spacing(2)
+        }
+      }
+    }
+  }
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+     <IndexPage/>
+    </ThemeProvider>
   );
 }
 
