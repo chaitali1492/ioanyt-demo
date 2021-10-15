@@ -1,10 +1,15 @@
 import React from "react";
+import Alert from '@mui/material/Alert';
 import Grid from "@mui/material/Grid";
+import Button from '@mui/material/Button';
+import { useTheme } from "@mui/material"
+import GitHubIcon from '@mui/icons-material/GitHub';
 import {
   BaseLayout,
   ClosePosition,
   EquityCurve,
   InstrumentPieChart,
+  Loader,
   NavigationProps,
   OpenPosition,
   WidgetProps,
@@ -16,6 +21,7 @@ import axios from "axios";
 import Props, { InstrumentItemType } from "./type";
 
 const IndexPage: React.FC<Props> = () => {
+  const  theme = useTheme();
   const [activeTab, setActiveTab] = React.useState(0);
   const [trades, setTrades] = React.useState<InstrumentItemType[]>([]);
   const [openTrades, setOpenTrades] = React.useState<InstrumentItemType[]>([]);
@@ -58,7 +64,7 @@ const IndexPage: React.FC<Props> = () => {
         const widgetItems = getWidgets(items);
         setWidgets(widgetItems);
         setTrades(items);
-        setLoading(true);
+        setLoading(false);
       })
       .catch(() => {
         setLoading(false);
@@ -66,7 +72,6 @@ const IndexPage: React.FC<Props> = () => {
   }, []);
 
   const renderLive = ():React.ReactElement => {
-    
     return (
       <Grid container spacing={4}>
         <Grid item xs={12} sm={12} md={8} lg={9}>
@@ -120,7 +125,18 @@ const IndexPage: React.FC<Props> = () => {
     }
   }
 
-  return <BaseLayout navigation={navItems}>{renderNavItem()}</BaseLayout>;
+  if(isLoading){
+    return <Loader/>
+  }
+
+  return (
+    <React.Fragment>
+      <Alert icon={<GitHubIcon/>} variant="filled" severity="success" sx={{borderRadius:0}}>
+        <Button sx={{color:theme.palette.common.white, padding:0}} href="#text-buttons" >Click to view code</Button>
+      </Alert>
+      <BaseLayout navigation={navItems}>{renderNavItem()}</BaseLayout>
+    </React.Fragment>
+  );
 };
 
 export default IndexPage;
